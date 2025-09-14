@@ -1,0 +1,118 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Elegant gray and beige design system for open source projects platform
+All colors MUST be HSL.
+*/
+
+@layer base {
+    :root {
+        /* GitHub Dark theme colors */
+        --background: 213 13% 8%;        /* GitHub dark background #0d1117 */
+        --foreground: 213 16% 91%;       /* GitHub light text #e6edf3 */
+
+        /* Card system */
+        --card: 213 13% 11%;             /* GitHub dark cards #161b22 */
+        --card-foreground: 213 16% 91%;
+        --card-hover: 213 13% 13%;       /* Slight hover effect */
+
+        /* Interactive elements */
+        --popover: 213 13% 11%;
+        --popover-foreground: 213 16% 91%;
+
+        /* Primary - GitHub accent blue */
+        --primary: 212 92% 63%;           /* GitHub blue #238636 -> changed to blue */
+        --primary-foreground: 213 13% 8%;
+
+        /* Secondary */
+        --secondary: 213 13% 16%;         /* GitHub secondary bg */
+        --secondary-foreground: 213 16% 91%;
+
+        /* Muted tones */
+        --muted: 213 13% 16%;
+        --muted-foreground: 213 12% 64%;  /* GitHub muted text */
+
+        /* Accent */
+        --accent: 213 13% 16%;
+        --accent-foreground: 213 16% 91%;
+
+        /* Status colors */
+        --destructive: 0 91% 71%;         /* GitHub red */
+        --destructive-foreground: 213 13% 8%;
+        --success: 137 72% 49%;           /* GitHub green */
+        --success-foreground: 213 13% 8%;
+
+        /* Borders and inputs */
+        --border: 213 13% 21%;            /* GitHub border #30363d */
+        --input: 213 13% 16%;
+        --ring: 212 92% 63%;
+
+        /* Star system */
+        --star-empty: 213 12% 64%;
+        --star-filled: 45 95% 55%;        /* Golden star */
+
+        /* Project tags */
+        --tag-bg: 213 13% 16%;
+        --tag-text: 213 16% 91%;
+
+        --radius: 0.75rem;
+
+        --sidebar-background: 213 13% 11%;
+        --sidebar-foreground: 213 16% 91%;
+        --sidebar-primary: 212 92% 63%;
+        --sidebar-primary-foreground: 213 13% 8%;
+        --sidebar-accent: 213 13% 16%;
+        --sidebar-accent-foreground: 213 16% 91%;
+        --sidebar-border: 213 13% 21%;
+        --sidebar-ring: 212 92% 63%;
+    }
+
+    /* Light theme kept for reference but we'll use dark by default */
+    .light {
+        --background: 0 0% 100%;
+        --foreground: 213 13% 8%;
+        --card: 0 0% 100%;
+        --card-foreground: 213 13% 8%;
+        --card-hover: 213 13% 96%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 213 13% 8%;
+        --primary: 212 92% 63%;
+        --primary-foreground: 0 0% 100%;
+        --secondary: 213 13% 96%;
+        --secondary-foreground: 213 13% 8%;
+        --muted: 213 13% 96%;
+        --muted-foreground: 213 12% 46%;
+        --accent: 213 13% 96%;
+        --accent-foreground: 213 13% 8%;
+        --destructive: 0 91% 71%;
+        --destructive-foreground: 0 0% 100%;
+        --success: 137 72% 49%;
+        --success-foreground: 0 0% 100%;
+        --border: 213 13% 91%;
+        --input: 213 13% 96%;
+        --ring: 212 92% 63%;
+        --star-empty: 213 12% 64%;
+        --star-filled: 45 95% 55%;
+        --tag-bg: 213 13% 96%;
+        --tag-text: 213 13% 8%;
+        --sidebar-background: 0 0% 100%;
+        --sidebar-foreground: 213 13% 8%;
+        --sidebar-primary: 212 92% 63%;
+        --sidebar-primary-foreground: 0 0% 100%;
+        --sidebar-accent: 213 13% 96%;
+        --sidebar-accent-foreground: 213 13% 8%;
+        --sidebar-border: 213 13% 91%;
+        --sidebar-ring: 212 92% 63%;
+    }
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+    }
+}
