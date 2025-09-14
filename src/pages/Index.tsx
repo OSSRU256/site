@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { useState, useMemo } from "react";
 import SearchBar from "@/components/SearchBar";
 import SortButton, { SortOrder } from "@/components/SortButton";
 import ProjectGrid from "@/components/ProjectGrid";
@@ -118,11 +117,19 @@ const Index = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
     const [projects, setProjects] = useState<Project[]>(mockProjects);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    // Extract all unique tags from projects
+    const allTags = useMemo(() => {
+        const tagSet = new Set<string>();
+        mockProjects.forEach(project => {
+            project.tags.forEach(tag => tagSet.add(tag));
+            project.languages.forEach(lang => tagSet.add(lang.toLowerCase()));
+            tagSet.add(project.license.toLowerCase());
+        });
+        return Array.from(tagSet).sort();
+    }, []);
 
     const handleStarToggle = (projectId: string) => {
-        if (!isLoggedIn) return;
-
         setProjects(projects.map(project =>
             project.id === projectId
                 ? {
@@ -138,28 +145,27 @@ const Index = () => {
         <div className="min-h-screen bg-background">
             {/* Header */}
             <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-10">
-                <div className="container mx-auto px-4 py-4">
-                    <div className="flex items-center justify-between mb-6">
-                        <h1 className="text-2xl font-bold text-foreground">
-                            OpenSource Projects
-                        </h1>
-                        <Button
-                            variant={isLoggedIn ? "default" : "outline"}
-                            onClick={() => setIsLoggedIn(!isLoggedIn)}
-                            className="h-10"
-                        >
-                            {isLoggedIn ? "Выйти" : "Войти"}
-                        </Button>
-                    </div>
-
+                <div className="container mx-auto px-4 py-3">
                     {/* Search and Sort */}
-                    <div className="flex flex-col sm:flex-row gap-4 items-center">
-                        <div className="w-full">
+                    <div className="flex items-center gap-4">
+                        {/* Open Source Symbol */}
+                        <div className="flex-shrink-0">
+                            <div
+                                className="w-8 h-8 flex items-center justify-center font-bold text-xl text-foreground"
+                                style={{ transform: "rotate(-45deg)" }}
+                            >
+                                C
+                            </div>
+                        </div>
+
+                        <div className="flex-1">
                             <SearchBar
                                 searchQuery={searchQuery}
                                 onSearchChange={setSearchQuery}
+                                allTags={allTags}
                             />
                         </div>
+
                         <div className="flex-shrink-0">
                             <SortButton
                                 sortOrder={sortOrder}
@@ -172,24 +178,12 @@ const Index = () => {
 
             {/* Main Content */}
             <main className="container mx-auto px-4 py-8">
-                <div className="mb-6">
-                    <div className="text-sm text-muted-foreground">
-                        Найдено проектов: {projects.filter(project => {
-                        if (!searchQuery.trim()) return true;
-                        const query = searchQuery.toLowerCase();
-                        return project.languages.some(lang => lang.toLowerCase().includes(query)) ||
-                            project.tags.some(tag => tag.toLowerCase().includes(query)) ||
-                            project.license.toLowerCase().includes(query);
-                    }).length}
-                    </div>
-                </div>
-
                 <ProjectGrid
                     projects={projects}
                     searchQuery={searchQuery}
                     sortOrder={sortOrder}
                     onStarToggle={handleStarToggle}
-                    isLoggedIn={isLoggedIn}
+                    isLoggedIn={true}
                 />
             </main>
         </div>

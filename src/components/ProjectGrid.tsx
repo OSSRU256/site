@@ -16,12 +16,27 @@ const ProjectGrid = ({ projects, searchQuery, sortOrder, onStarToggle, isLoggedI
         let filtered = projects;
 
         if (searchQuery.trim()) {
-            const query = searchQuery.toLowerCase();
-            filtered = projects.filter(project =>
-                project.languages.some(lang => lang.toLowerCase().includes(query)) ||
-                project.tags.some(tag => tag.toLowerCase().includes(query)) ||
-                project.license.toLowerCase().includes(query)
-            );
+            // Extract tags from search query (tags start with #)
+            const hashTags = searchQuery.match(/#(\w+)/g)?.map(tag => tag.substring(1).toLowerCase()) || [];
+            // Extract regular search terms (not starting with #)
+            const regularTerms = searchQuery.replace(/#\w+/g, '').trim().toLowerCase();
+
+            filtered = projects.filter(project => {
+                // Check if all hash tags match
+                const hashTagsMatch = hashTags.length === 0 || hashTags.every(hashTag =>
+                    project.languages.some(lang => lang.toLowerCase().includes(hashTag)) ||
+                    project.tags.some(tag => tag.toLowerCase().includes(hashTag)) ||
+                    project.license.toLowerCase().includes(hashTag)
+                );
+
+                // Check if regular terms match
+                const regularTermsMatch = !regularTerms ||
+                    project.languages.some(lang => lang.toLowerCase().includes(regularTerms)) ||
+                    project.tags.some(tag => tag.toLowerCase().includes(regularTerms)) ||
+                    project.license.toLowerCase().includes(regularTerms);
+
+                return hashTagsMatch && regularTermsMatch;
+            });
         }
 
         // Sort projects
